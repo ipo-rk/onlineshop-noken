@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.7s cubic-bezier(.4, 2, .6, 1) both;
+        }
+
+        .input-animate:focus {
+            box-shadow: 0 0 0 4px #60a5fa33, 0 2px 8px #60a5fa22;
+            transform: scale(1.03);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .icon-animate {
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .input-animate:focus~.icon-animate {
+            color: #2563eb;
+            transform: scale(1.15);
+        }
+
+        .btn-animate {
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+        }
+
+        .btn-animate:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 16px #60a5fa44;
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+        }
+
+        .btn-animate:active {
+            transform: scale(0.98);
+        }
+
+        .fade-message {
+            animation: fade-in 0.5s cubic-bezier(.4, 2, .6, 1) both;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body class="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md mx-auto animate-fade-in" x-data="loginForm()">
+        <div
+            class="bg-white/90 border border-blue-200 rounded-3xl shadow-xl p-8 md:p-10 relative overflow-hidden backdrop-blur-lg">
+            <div class="flex flex-col items-center mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-full p-4 shadow-lg mb-2">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-14 w-14 text-white' fill='none' viewBox='0 0 24 24'
+                        stroke='currentColor'>
+                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                            d='M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 2c-2.67 0-8 1.337-8 4v2a1 1 0 001 1h14a1 1 0 001-1v-2c0-2.663-5.33-4-8-4z' />
+                    </svg>
+                </div>
+                <h2 class="text-4xl font-extrabold text-gray-900 mb-1 tracking-tight drop-shadow">Admin Login</h2>
+                <span class="text-base text-gray-500 font-medium">Masuk ke dashboard admin Shoesmu</span>
+            </div>
+            <form @submit.prevent="login" class="space-y-6" x-show="!isLoggedIn">
+                <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" x-model="email" placeholder="Masukkan email admin" autocomplete="username"
+                        class="w-full border-2 border-blue-300 rounded-xl px-5 py-3 bg-blue-50/60 focus:outline-none input-animate text-lg transition placeholder-gray-400 pr-12"
+                        required>
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-animate" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 12v1m0 4v1m-8-5v1m0 4v1m8-9V7a4 4 0 00-8 0v2a4 4 0 008 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="relative flex items-center">
+                    <label class="block text-gray-700 font-semibold mb-2 w-full">Password</label>
+                    <input :type="showPassword ? 'text' : 'password'" x-model="password" placeholder="Masukkan password"
+                        autocomplete="current-password"
+                        class="w-full border-2 border-blue-300 rounded-xl px-5 py-3 bg-blue-50/60 focus:outline-none input-animate text-lg transition placeholder-gray-400 pr-12"
+                        required>
+                    <button type="button" @click="showPassword = !showPassword" tabindex="-1"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 icon-animate text-gray-400 hover:text-blue-600 focus:outline-none">
+                        <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268-2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95m3.671-2.568A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.965 9.965 0 01-4.293 5.568M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" x-model="rememberMe" class="form-checkbox accent-blue-600">
+                    <span class="text-gray-600 text-sm">Remember Me</span>
+                </div>
+                <button type="submit"
+                    class="w-full px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-400 text-white font-bold shadow-lg btn-animate text-lg tracking-wide flex items-center justify-center gap-2">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' viewBox='0 0 24 24'
+                        stroke='currentColor'>
+                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7' />
+                    </svg>
+                    Login
+                </button>
+            </form>
+            <template x-if="error">
+                <div class="mt-4 text-red-600 text-sm text-center fade-message" x-text="error"></div>
+            </template>
+            <div class="mt-4 text-center text-sm">
+                Belum punya akun? <a href="register.html"
+                    class="text-blue-600 hover:underline font-semibold">Register</a>
+            </div>
+            <!-- Tombol logout jika sudah login -->
+            <template x-if="isLoggedIn">
+                <div class="mt-8 flex flex-col items-center">
+                    <div class="mb-4 text-green-700 font-semibold">Anda sudah login sebagai <span x-text="email"></span>
+                    </div>
+                    <button @click="logout"
+                        class="px-6 py-2 rounded-xl bg-red-500 text-white font-bold shadow hover:bg-red-600 transition">Logout</button>
+                </div>
+            </template>
+        </div>
+    </div>
+    <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.7s cubic-bezier(.4, 2, .6, 1) both;
+        }
+    </style>
+    </style>
+    <script>
+        function loginForm() {
+            return {
+                admins: JSON.parse(localStorage.getItem('admins')) || [],
+                email: localStorage.getItem('rememberEmail') || '',
+                password: localStorage.getItem('rememberPassword') || '',
+                rememberMe: !!localStorage.getItem('rememberEmail'),
+                showPassword: false,
+                error: '',
+                isLoggedIn: !!localStorage.getItem('isLoggedIn'),
+                login() {
+                    if (!this.email || !this.password) {
+                        this.error = 'Email dan password wajib diisi!';
+                        Swal.fire({ icon: 'warning', title: 'Lengkapi Data', text: 'Email dan password wajib diisi!' });
+                        return;
+                    }
+                    const found = this.admins.find(a => a.email === this.email && a.password === this.password);
+                    if (found) {
+                        const adminData = {
+                            id: found.id || '',
+                            name: found.name || '',
+                            email: found.email || '',
+                            password: found.password || '',
+                            phone: found.phone || '',
+                            address: found.address || '',
+                            profileImage: found.profileImage || ''
+                        };
+                        localStorage.setItem('admin', JSON.stringify(adminData));
+                        localStorage.setItem('isLoggedIn', 'true');
+                        this.isLoggedIn = true;
+                        if (this.rememberMe) {
+                            localStorage.setItem('rememberEmail', this.email);
+                            localStorage.setItem('rememberPassword', this.password);
+                        } else {
+                            localStorage.removeItem('rememberEmail');
+                            localStorage.removeItem('rememberPassword');
+                        }
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Berhasil',
+                            text: 'Selamat datang di dashboard',
+                            confirmButtonText: 'OK',
+                            timer: 1200,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = 'dashboard.html';
+                        });
+                    } else {
+                        this.error = 'Email atau password salah!';
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Gagal',
+                            text: 'Email atau password salah!'
+                        });
+                    }
+                },
+                logout() {
+                    localStorage.removeItem('admin');
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('rememberEmail');
+                    localStorage.removeItem('rememberPassword');
+                    this.email = '';
+                    this.password = '';
+                    this.rememberMe = false;
+                    this.isLoggedIn = false;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Logout Berhasil',
+                        text: 'Anda telah keluar dari dashboard',
+                        confirmButtonText: 'OK',
+                        timer: 1200,
+                        showConfirmButton: false
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

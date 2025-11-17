@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.7s cubic-bezier(.4, 2, .6, 1) both;
+        }
+
+        .input-animate:focus {
+            box-shadow: 0 0 0 4px #60a5fa33, 0 2px 8px #60a5fa22;
+            transform: scale(1.03);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .icon-animate {
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .input-animate:focus~.icon-animate {
+            color: #2563eb;
+            transform: scale(1.15);
+        }
+
+        .btn-animate {
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+        }
+
+        .btn-animate:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 16px #60a5fa44;
+            background: linear-gradient(to right, #2563eb, #3b82f6);
+        }
+
+        .btn-animate:active {
+            transform: scale(0.98);
+        }
+
+        .fade-message {
+            animation: fade-in 0.5s cubic-bezier(.4, 2, .6, 1) both;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md mx-auto animate-fade-in" x-data="registerForm()">
+        <div
+            class="bg-white/90 border border-blue-200 rounded-3xl shadow-xl p-8 md:p-10 relative overflow-hidden backdrop-blur-lg">
+            <div class="flex flex-col items-center mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-full p-4 shadow-lg mb-2">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-14 w-14 text-white' fill='none' viewBox='0 0 24 24'
+                        stroke='currentColor'>
+                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2'
+                            d='M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 2c-2.67 0-8 1.337-8 4v2a1 1 0 001 1h14a1 1 0 001-1v-2c0-2.663-5.33-4-8-4z' />
+                    </svg>
+                </div>
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-1 tracking-tight drop-shadow">Register Admin</h1>
+                <span class="text-base text-gray-500 font-medium">Buat akun admin baru Shoesmu</span>
+            </div>
+            <form @submit.prevent="register" class="space-y-6">
+                <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-2">Nama</label>
+                    <input type="text" x-model="name"
+                        class="w-full border-2 border-blue-300 rounded-xl px-5 py-3 bg-blue-50/60 focus:outline-none input-animate text-lg transition placeholder-gray-400 pr-12"
+                        placeholder="Masukkan nama" required>
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-animate" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.657 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" x-model="email"
+                        class="w-full border-2 border-blue-300 rounded-xl px-5 py-3 bg-blue-50/60 focus:outline-none input-animate text-lg transition placeholder-gray-400 pr-12"
+                        placeholder="Masukkan email" required>
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-animate" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 12v1m0 4v1m-8-5v1m0 4v1m8-9V7a4 4 0 00-8 0v2a4 4 0 008 0z" />
+                        </svg>
+                    </span>
+                </div>
+                <div class="relative flex items-center">
+                    <label class="block text-gray-700 font-semibold mb-2 w-full">Password</label>
+                    <input :type="showPassword ? 'text' : 'password'" x-model="password"
+                        class="w-full border-2 border-blue-300 rounded-xl px-5 py-3 bg-blue-50/60 focus:outline-none input-animate text-lg transition placeholder-gray-400 pr-12"
+                        placeholder="Masukkan password" required>
+                    <button type="button" @click="showPassword = !showPassword" tabindex="-1"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 icon-animate text-gray-400 hover:text-blue-600 focus:outline-none">
+                        <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <svg x-show="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.293-3.95m3.671-2.568A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.965 9.965 0 01-4.293 5.568M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="relative">
+                    <label class="block text-gray-700 font-semibold mb-2">Konfirmasi Password</label>
+                    <input :type="showPassword ? 'text' : 'password'" x-model="confirmPassword"
+                        class="w-full border-2 border-blue-300 rounded-xl px-5 py-3 bg-blue-50/60 focus:outline-none input-animate text-lg transition placeholder-gray-400 pr-12"
+                        placeholder="Konfirmasi password" required>
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-animate" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 2c-2.67 0-8 1.337-8 4v2a1 1 0 001 1h14a1 1 0 001-1v-2c0-2.663-5.33-4-8-4z" />
+                        </svg>
+                    </span>
+                </div>
+                <button type="submit"
+                    class="w-full px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-400 text-white font-bold shadow-lg btn-animate text-lg tracking-wide flex items-center justify-center gap-2">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' viewBox='0 0 24 24'
+                        stroke='currentColor'>
+                        <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7' />
+                    </svg>
+                    Register
+                </button>
+            </form>
+            <template x-if="error">
+                <div class="mt-4 text-red-600 text-sm text-center fade-message">{{ error }}</div>
+            </template>
+            <div class="mt-4 text-center text-sm">
+                Sudah punya akun? <a href="logout.html" class="text-blue-600 hover:underline font-semibold">Login</a>
+            </div>
+        </div>
+    </div>
+    <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.7s cubic-bezier(.4, 2, .6, 1) both;
+        }
+    </style>
+    <script>
+        function registerForm() {
+            return {
+                name: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                showPassword: false,
+                error: '',
+                register() {
+                    if (!this.name || !this.email || !this.password || !this.confirmPassword) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Semua field wajib diisi!'
+                        });
+                        return;
+                    }
+                    if (this.password !== this.confirmPassword) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Password dan konfirmasi password tidak sama!'
+                        });
+                        return;
+                    }
+                    // Generate unique user id (timestamp + random)
+                    const userId = 'ADM-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+                    // Ambil daftar admin lama (jika ada)
+                    let admins = JSON.parse(localStorage.getItem('admins')) || [];
+                    // Pastikan struktur lengkap
+                    const newAdmin = {
+                        id: userId,
+                        name: this.name,
+                        email: this.email,
+                        password: this.password,
+                        phone: '',
+                        address: '',
+                        profileImage: ''
+                    };
+                    admins.push(newAdmin);
+                    localStorage.setItem('admins', JSON.stringify(admins));
+                    // Juga simpan admin terakhir ke 'admin' untuk auto-login
+                    localStorage.setItem('admin', JSON.stringify(newAdmin));
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registrasi Berhasil',
+                        text: 'Akun admin berhasil dibuat',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = 'logout.html';
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

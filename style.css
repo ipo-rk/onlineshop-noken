@@ -1,0 +1,32 @@
+/* Navbar underline animation */
+.group:hover .group-hover\:scale-x-100 {
+    transform: scaleX(1);
+}
+.group-hover\:scale-x-100 {
+    transform: scaleX(0);
+}
+a.relative, .no-underline, nav a {
+    text-decoration: none !important;
+    -webkit-text-decoration: none !important;
+}
+/* Ensure navbar links have no underline */
+.no-underline, .navbar a, nav a, .navbar-link {
+    text-decoration: none !important;
+}
+/* Custom styles for Shoesmu Dashboard */
+body {
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+                    /* Navbar underline animation */
+                    .group:hover .group-hover\:scale-x-100 {
+                        transform: scaleX(1);
+                    }
+
+                    .group-hover\:scale-x-100 {
+                        transform: scaleX(0);
+                    }
+
+                    a.relative {
+                        overflow: visible;
+                    }
